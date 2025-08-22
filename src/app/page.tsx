@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link"; // 👈 importa el componente Link
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
@@ -18,14 +19,14 @@ export default function Home() {
 
   const verificarEdad = () => {
     const edadNum = parseInt(edad);
-    
+
     if (isNaN(edadNum)) {
       setMensaje("¡Oops! ¿Eso es un número? ¡Inténtalo de nuevo! ⚠️");
       setTipoMensaje("error");
       setMostrarResultado(true);
       return;
     }
-    
+
     if (edadNum === 18) {
       setMensaje(`¡FELICIDADES! 🎉 ¡Con ${edadNum} años ya puedes hacer TOOOODO lo legal! 🥳`);
       setTipoMensaje("mayor");
@@ -43,7 +44,7 @@ export default function Home() {
       setMensaje(`¡Con ${edadNum} años ya no engañas a nadie! ¡Estás en tu mejor momento! 🕺💃`);
       setTipoMensaje("viejo");
     }
-    
+
     setMostrarResultado(true);
   };
 
@@ -54,21 +55,21 @@ export default function Home() {
     setMostrarResultado(false);
     setConfetti(false);
   };
-  
+
   // Función para generar confeti
   const renderConfetti = () => {
     if (!confetti) return null;
-    
+
     const confettiElements = [];
     const colors = ['#FF5252', '#FF9800', '#FFEB3B', '#66BB6A', '#42A5F5', '#7E57C2', '#EC407A'];
-    
+
     for (let i = 0; i < 50; i++) {
       const left = `${Math.random() * 100}vw`;
       const animationDuration = `${Math.random() * 3 + 2}s`;
       const color = colors[Math.floor(Math.random() * colors.length)];
-      
+
       confettiElements.push(
-        <div 
+        <div
           key={i}
           className="confetti"
           style={{
@@ -82,10 +83,10 @@ export default function Home() {
         />
       );
     }
-    
+
     return confettiElements;
   };
-  
+
   const renderIcono = () => {
     switch (tipoMensaje) {
       case "mayor":
@@ -128,11 +129,11 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {renderConfetti()}
-      <div className={`bg-white p-8 rounded-lg shadow-lg max-w-md w-full card-3d ${animacionEntrada ? 'animate-fadeIn' : ''} relative`} style={{opacity: 1}}>
+      <div className={`bg-white p-8 rounded-lg shadow-lg max-w-md w-full card-3d ${animacionEntrada ? 'animate-fadeIn' : ''} relative`} style={{ opacity: 1 }}>
         <div className="viral-tag">¡VIRAL! 🔥</div>
         <h1 className="text-4xl font-bold text-center mb-6 rainbow-text shine">🎮 ¿CUÁNTOS AÑOS TIENES? 🎮</h1>
         <h2 className="text-xl font-medium text-center mb-8 bounce">¡Descubre si eres joven o sabio! 🧙‍♂️</h2>
-        
+
         {!mostrarResultado ? (
           <div className="space-y-4">
             <div className="flex flex-col">
@@ -146,13 +147,13 @@ export default function Home() {
                 placeholder="¿Cuántos añitos? 🤔"
               />
             </div>
-            
+
             <button
-                onClick={verificarEdad}
-                className="w-full btn-fun py-3 px-4 rounded-full font-bold text-lg hover:shake"
-              >
-                ¡REVELAR MI DESTINO! 🔮
-              </button>
+              onClick={verificarEdad}
+              className="w-full btn-fun py-3 px-4 rounded-full font-bold text-lg hover:shake"
+            >
+              ¡REVELAR MI DESTINO! 🔮
+            </button>
           </div>
         ) : (
           <div className="space-y-4">
@@ -161,23 +162,37 @@ export default function Home() {
               <p className="text-xl font-medium text-center">{mensaje}</p>
               {renderIcono()}
             </div>
-            
+
             <button
               onClick={reiniciar}
               className="w-full btn-fun py-3 px-4 rounded-full font-bold text-lg mt-4"
             >
               ¡INTENTAR DE NUEVO! 🎲
             </button>
-            
+
             <ShareButtons mensaje={mensaje} />
           </div>
         )}
       </div>
-      
       <footer className="mt-8 text-center text-gray-800 float">
-        <p className="text-xl font-bold rainbow-text">✨ ¡Comparte con tus amigos y descubre quién es más joven! ✨</p>
-        <p className="mt-2 text-lg">🚀 Hecho con Next.js y mucha diversión 🚀</p>
-        <p className="mt-4 text-sm font-bold">👉 ¡Más de 1 millón de personas ya lo han probado! 👈</p>
+        <p className="text-xl font-bold rainbow-text">
+          ✨ ¡Comparte con tus amigos y descubre quién es más joven! ✨
+        </p>
+        <p className="mt-2 text-lg">
+          🚀 Hecho por{" "}
+          <Link
+            href="https://jcaicedodev.netlify.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-600 hover:underline font-bold"
+          >
+            José Caicedo
+          </Link>{" "}
+
+        </p>
+        <p className="mt-4 text-sm font-bold">
+          👉 ¡Más de 1 millón de personas ya lo han probado, mucha diversión 🚀! 👈
+        </p>
       </footer>
     </div>
   );
