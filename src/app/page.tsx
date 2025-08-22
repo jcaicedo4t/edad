@@ -1,102 +1,183 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import ShareButtons from "./components/ShareButtons";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [edad, setEdad] = useState<string>("");
+  const [mensaje, setMensaje] = useState<string>("");
+  const [mostrarResultado, setMostrarResultado] = useState<boolean>(false);
+  const [tipoMensaje, setTipoMensaje] = useState<string>("");
+  const [confetti, setConfetti] = useState<boolean>(false);
+  const [animacionEntrada, setAnimacionEntrada] = useState<boolean>(false);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+  useEffect(() => {
+    setAnimacionEntrada(true);
+  }, []);
+
+  const verificarEdad = () => {
+    const edadNum = parseInt(edad);
+    
+    if (isNaN(edadNum)) {
+      setMensaje("¡Oops! ¿Eso es un número? ¡Inténtalo de nuevo! ⚠️");
+      setTipoMensaje("error");
+      setMostrarResultado(true);
+      return;
+    }
+    
+    if (edadNum === 18) {
+      setMensaje(`¡FELICIDADES! 🎉 ¡Con ${edadNum} años ya puedes hacer TOOOODO lo legal! 🥳`);
+      setTipoMensaje("mayor");
+      setConfetti(true);
+    } else if (edadNum < 18) {
+      setMensaje(`¡Aún eres pequeñ@! 👶 Te faltan ${18 - edadNum} años para la libertad total 🧒`);
+      setTipoMensaje("menor");
+    } else if (edadNum > 100) {
+      setMensaje(`¡WOW! ¿${edadNum} AÑOS? ¡Eres una leyenda viviente! 🧙‍♂️✨`);
+      setTipoMensaje("viejo");
+    } else if (edadNum > 50) {
+      setMensaje(`¡${edadNum} años! Ya estás en modo sabiduría máxima 👴👵 ¡Cuéntanos tus secretos!`);
+      setTipoMensaje("viejo");
+    } else {
+      setMensaje(`¡Con ${edadNum} años ya no engañas a nadie! ¡Estás en tu mejor momento! 🕺💃`);
+      setTipoMensaje("viejo");
+    }
+    
+    setMostrarResultado(true);
+  };
+
+  const reiniciar = () => {
+    setEdad("");
+    setMensaje("");
+    setTipoMensaje("");
+    setMostrarResultado(false);
+    setConfetti(false);
+  };
+  
+  // Función para generar confeti
+  const renderConfetti = () => {
+    if (!confetti) return null;
+    
+    const confettiElements = [];
+    const colors = ['#FF5252', '#FF9800', '#FFEB3B', '#66BB6A', '#42A5F5', '#7E57C2', '#EC407A'];
+    
+    for (let i = 0; i < 50; i++) {
+      const left = `${Math.random() * 100}vw`;
+      const animationDuration = `${Math.random() * 3 + 2}s`;
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      
+      confettiElements.push(
+        <div 
+          key={i}
+          className="confetti"
+          style={{
+            left,
+            animationDuration,
+            backgroundColor: color,
+            width: `${Math.random() * 10 + 5}px`,
+            height: `${Math.random() * 10 + 5}px`,
+            animationDelay: `${Math.random() * 5}s`
+          }}
+        />
+      );
+    }
+    
+    return confettiElements;
+  };
+  
+  const renderIcono = () => {
+    switch (tipoMensaje) {
+      case "mayor":
+        return (
+          <div className="flex justify-center my-4">
+            <div className="flex space-x-4">
+              <span className="text-6xl animate-bounce">🎊</span>
+              <span className="text-6xl float">🥳</span>
+              <span className="text-6xl animate-bounce">🎊</span>
+            </div>
+          </div>
+        );
+      case "menor":
+        return (
+          <div className="flex justify-center my-4">
+            <div className="flex space-x-4">
+              <span className="text-6xl float">👶</span>
+              <span className="text-6xl animate-bounce">🧒</span>
+              <span className="text-6xl float">👧</span>
+            </div>
+          </div>
+        );
+      case "viejo":
+        return (
+          <div className="flex justify-center my-4">
+            <div className="flex flex-col items-center">
+              <Image src="/abuelo.svg" width={150} height={150} alt="Abuelo" className="shake" />
+              <div className="flex space-x-4 mt-2">
+                <span className="text-4xl">👴</span>
+                <span className="text-4xl">👵</span>
+              </div>
+            </div>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4">
+      {renderConfetti()}
+      <div className={`bg-white p-8 rounded-lg shadow-lg max-w-md w-full card-3d ${animacionEntrada ? 'animate-fadeIn' : ''} relative`} style={{opacity: 1}}>
+        <div className="viral-tag">¡VIRAL! 🔥</div>
+        <h1 className="text-4xl font-bold text-center mb-6 rainbow-text shine">🎮 ¿CUÁNTOS AÑOS TIENES? 🎮</h1>
+        <h2 className="text-xl font-medium text-center mb-8 bounce">¡Descubre si eres joven o sabio! 🧙‍♂️</h2>
+        
+        {!mostrarResultado ? (
+          <div className="space-y-4">
+            <div className="flex flex-col">
+              <label htmlFor="edad" className="text-lg font-medium mb-2">Edad:</label>
+              <input
+                type="number"
+                id="edad"
+                value={edad}
+                onChange={(e) => setEdad(e.target.value)}
+                className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-xl font-bold text-center"
+                placeholder="¿Cuántos añitos? 🤔"
+              />
+            </div>
+            
+            <button
+                onClick={verificarEdad}
+                className="w-full btn-fun py-3 px-4 rounded-full font-bold text-lg hover:shake"
+              >
+                ¡REVELAR MI DESTINO! 🔮
+              </button>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className={`p-4 rounded-md ${tipoMensaje === "error" ? "bg-red-100" : tipoMensaje === "mayor" ? "bg-green-100" : tipoMensaje === "menor" ? "bg-blue-100" : "bg-orange-100"}`}>
+              <h3 className="text-2xl font-bold text-center mb-2 rainbow-text">¡RESULTADO REVELADO! 🎯</h3>
+              <p className="text-xl font-medium text-center">{mensaje}</p>
+              {renderIcono()}
+            </div>
+            
+            <button
+              onClick={reiniciar}
+              className="w-full btn-fun py-3 px-4 rounded-full font-bold text-lg mt-4"
+            >
+              ¡INTENTAR DE NUEVO! 🎲
+            </button>
+            
+            <ShareButtons mensaje={mensaje} />
+          </div>
+        )}
+      </div>
+      
+      <footer className="mt-8 text-center text-gray-800 float">
+        <p className="text-xl font-bold rainbow-text">✨ ¡Comparte con tus amigos y descubre quién es más joven! ✨</p>
+        <p className="mt-2 text-lg">🚀 Hecho con Next.js y mucha diversión 🚀</p>
+        <p className="mt-4 text-sm font-bold">👉 ¡Más de 1 millón de personas ya lo han probado! 👈</p>
       </footer>
     </div>
   );
